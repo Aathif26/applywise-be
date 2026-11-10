@@ -1,0 +1,21 @@
+services:
+  db:
+    image: postgres:16
+    container_name: applywise-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: applywise_user
+      POSTGRES_PASSWORD: change_this_local_password
+      POSTGRES_DB: applywise_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - applywise_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U applywise_user -d applywise_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  applywise_postgres_data:
